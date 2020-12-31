@@ -1,0 +1,11 @@
+new_local_repository(
+    name = "htslib",
+    build_file = "BUILD.bazel",
+    path = "/htslib",
+)
+
+new_local_repository(
+    name = "bcftools",
+    build_file = "BUILD.bazel",
+    path = "/bcftools",
+)

@@ -1,0 +1,2 @@
+g++ -Wall -I/home/niktabel/master_projects/ThirdParty/htslib/ -I/home/niktabel/master_projects/ThirdParty/htslib/htslib -L/home/niktabel/master_projects/ThirdParty/htslib/ main.cpp -lhts -o moiii
+

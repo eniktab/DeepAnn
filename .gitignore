@@ -1,3 +1,6 @@
+#bazel build files
+bazel-*
+
 # Prerequisites
 *.d
 

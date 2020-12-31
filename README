@@ -1,0 +1,3 @@
+bazel build //main:TestRead
+cat ref.fastq | ./TestRead  calls.vcf.gz
+
