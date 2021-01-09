@@ -722,6 +722,7 @@ static void apply_variant(args_t *args, bcf1_t *rec)
         for (i=trim_beg; i<alen; i++)
             args->fa_buf.s[idx+i] = rec->d.allele[ialt][i];
 
+
         if ( len_diff )
             memmove(args->fa_buf.s+idx+alen,args->fa_buf.s+idx+rec->rlen,args->fa_buf.l-idx-rec->rlen);
     }

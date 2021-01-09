@@ -9,5 +9,3 @@ new_local_repository(
     build_file = "BUILD.bazel",
     path = "/bcftools",
 )
-
-#run cat ref.fastq | ./TestRead  calls.vcf.gz
