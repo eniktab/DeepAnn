@@ -13,6 +13,8 @@
 #define THYMINE_COEFCHR  7
 #define CYTOSINE_COEFCHR 11
 
+#define SNV 13
+
 typedef struct
 {
     signed short charge;
@@ -37,54 +39,84 @@ snp* fill_haplotype(snp* empty_haplotype, int i,
 
 }
 
-signed short estimate_charge(char reference_c[], char alternative_c[])
+signed short nuc_to_charge(char* iupac)
 {
-    int charge = 0;
-    for (int i = 0; i < strlen(reference_c); i++)
+    signed short charge = 0;
+    // for copy number variants
+    if(iupac[0] == '<')
     {
-        char upper_i = toupper(reference_c[i]);
-        switch (upper_i) {
-            case 'A':
-                charge += ADENINE_COEFCHR;
-                break;
-            case 'G':
-                charge += GUANINE_COEFCHR;
-                break;
-            case 'T':
-                charge += THYMINE_COEFCHR;
-                break;
-            case 'C':
-                charge += CYTOSINE_COEFCHR;
-                break;
-        }
-    }
-        for (int i = 0; i < strlen(alternative_c); i++)
+        //<cnv[some number]
+        short  cn_c;
+        for (int cnt = 0; cnt<strlen(iupac); cnt++)
         {
-            char upper_i = toupper(alternative_c[i]);
-            switch(upper_i)
+            //printf("%c :", iupac[cnt] );
+            if (cnt % 3 ==0 && iupac[cnt +1] == '>')
             {
-                case 'A':
-                    charge -= ADENINE_COEFCHR;
-                    break;
-                case 'G':
-                    charge -= GUANINE_COEFCHR;
-                    break;
-                case 'T':
-                    charge -= THYMINE_COEFCHR;
-                    break;
-                case 'C':
-                    charge -= CYTOSINE_COEFCHR ;
-                    break;
+                int cn = atoi(&iupac[cnt]);
+                cn_c = cn * SNV;
+                charge += cn_c;
+                //printf(">> %i \n", cn);
+            }
+            else
+            {
+                int cn = atoi(&iupac[cnt]);
+                cn_c = cn * SNV *10;
+                charge += cn_c;
             }
         }
+        return charge;
+    }
+    else
+    {
+        for (int i = 0; i < strlen(iupac); i++)
+        {
+            char upper_i = toupper(iupac[i]);
+            switch (upper_i)
+            {
+                case 'A':
+                    charge += ADENINE_COEFCHR;
+                    break;
+                case 'G':
+                    charge += GUANINE_COEFCHR;
+                    break;
+                case 'T':
+                    charge += THYMINE_COEFCHR;
+                    break;
+                case 'C':
+                    charge += CYTOSINE_COEFCHR;
+                    break;
+                default:
+                    charge += SNV;
+            }
+        }
+    }
+
+        return charge;
+
+}
+
+
+signed short estimate_charge(char* reference_c, char* alternative_c)
+{
+    signed short charge = 0;
+    if ( reference_c == alternative_c)
+    {
+        return charge;
+    }
+    signed short ref_charge = nuc_to_charge(reference_c);
+    signed short alt_charge = -1 * nuc_to_charge(alternative_c);
+
+    charge = ref_charge + alt_charge;
+
     return charge;
 
 }
 
 int main()
 {
-    int X = 1;
-    signed short  a =  estimate_charge("att", "atC");
+    char* first = "A";
+    char* second = "<CN0>,<CN2>,<CN3>,<CN4>";
+    signed short  a =  estimate_charge(first, second);
     printf("%d", a);
     //snp* A = creat_haplotype(10) ;
     //fill_haplotype(A);

@@ -1,6 +1,7 @@
 g++ -Wall -I/home/niktabel/master_projects/ThirdParty/htslib/ -I/home/niktabel/master_projects/ThirdParty/htslib/htslib -L/home/niktabel/master_projects/ThirdParty/htslib/ main.cpp -lhts -o moiii
 
-#run cat ref.fastq | ./TestRead  calls.vcf.gz
+#run cat /home/niktabel/master_projects/SampleGenomicData/ref.fastq | ./TestRead /home/niktabel/master_projects/SampleGenomicData/calls.vcf.gz
+
 
 bazel build //main:TestRead
 

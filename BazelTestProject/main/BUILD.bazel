@@ -1,7 +1,11 @@
 cc_binary(
     name = "TestRead",
-    srcs = ["VcfImage.c"],
+    srcs = [
+        #"consensus.c",
+        "VcfImage.c",
+    ],
     deps = [
-        "//htslib",
+        "//bcftools",
+        #"//htslib",
     ],
 )
