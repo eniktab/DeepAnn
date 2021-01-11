@@ -118,7 +118,7 @@ int main()
     char* second = "<CN0>,<CN2>,<CN3>,<CN4>";
     signed short  a =  estimate_charge(first, second);
     printf("%d", a);
-    //snp* A = creat_haplotype(10) ;
+    chain* A = creat_haplotype(10) ;
     //fill_haplotype(A);
     //printf("%ld \n", A->pos);
     //printf("%ld \n", A[0].pos);
