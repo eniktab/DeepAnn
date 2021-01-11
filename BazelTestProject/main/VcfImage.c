@@ -165,28 +165,6 @@ void read_vcf(char *fname)
                 }
             }
             printf("%d \n", charge);
-            /*else
-            {
-                printf("0");
-            }
-            if (first_allele_g>0)
-            {
-                printf("%s", rec->d.allele[1]);
-            }
-            else
-            {
-                printf("%s", rec->d.allele[0]);
-            }
-            if (second_allele_g>0)
-            {
-                printf("%s\n", rec->d.allele[1]);
-            }
-            else
-            {
-                printf("%s\n", rec->d.allele[0]);
-            }*/
-
-
 
         }
 
