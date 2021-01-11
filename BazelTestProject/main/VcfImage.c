@@ -13,6 +13,7 @@
 #include "htslib/hts.h"
 #include <htslib/synced_bcf_reader.h>
 
+
 #define ADENINE_COEFCHR  3
 #define GUANINE_COEFCHR  5
 
@@ -36,8 +37,16 @@ snp* creat_haplotype(int buffer_size)
     return empty_haplotype;
 }
 
+void fill_haplotype(snp* empty_haplotype, int i,
+                    unsigned long c_pos, signed short c_charge, float c_quality)
+{
+    empty_haplotype[i].charge = c_charge;
+    empty_haplotype[i].pos = c_pos;
+    empty_haplotype[i].quality = c_quality;
 
-signed short nuc_to_charge(char* iupac)
+}
+
+signed short nuc_to_charge(const char* iupac)
 {
     signed short charge = 0;
     // for copy number variants
@@ -94,7 +103,7 @@ signed short nuc_to_charge(char* iupac)
 }
 
 
-signed short estimate_charge(char* reference_c, char* alternative_c)
+signed short estimate_charge(const char* reference_c, const char* alternative_c)
 {
     signed short charge = 0;
     if ( reference_c == alternative_c)
