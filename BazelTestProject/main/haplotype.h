@@ -1,0 +1,9 @@
+//
+// Created by niktabel on 19/01/21.
+//
+
+#ifndef BAZELTESTPROJECT_HAPLOTYPE_H
+#define BAZELTESTPROJECT_HAPLOTYPE_H
+
+#endif //BAZELTESTPROJECT_HAPLOTYPE_H
+
