@@ -4,7 +4,8 @@ cc_binary(
         #"consensus.c",
         "VcfImage.cpp",
     ],
-    linkopts = ["-fopenmp"],
+    copts = ["-fopenmp"],
+    linkopts = ["-lgomp"],
     deps = [
         "//bcftools",
         #"//htslib",

@@ -8,7 +8,9 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
-//#include <omp.h>
+#include <omp.h>
+#include <thread>
+#include <chrono>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -19,6 +21,7 @@
 #include "htslib/hts.h"
 #include <htslib/synced_bcf_reader.h>
 using namespace std;
+using namespace std::chrono;
 
 
 #define ADENINE_COEFCHR  3
@@ -117,6 +120,7 @@ signed short estimate_charge(const char* reference_c, const char* alternative_c)
         return charge;
     }
     signed short ref_charge = nuc_to_charge(reference_c);
+    // leave 1 or two thread for writing out files
     signed short alt_charge = -1 * nuc_to_charge(alternative_c);
 
     charge = ref_charge + alt_charge;
@@ -158,7 +162,16 @@ void write_haplotype (string output_dir, string sample, string chr, unsigned lon
 
 void read_vcf(const char *fname)
 {
-    omp_set_num_threads(24);
+    const auto processor_count = std::thread::hardware_concurrency();
+    if (processor_count > 0)
+    {
+        omp_set_num_threads(processor_count - 1);
+    }
+    else
+    {
+        omp_set_num_threads(4);
+    }
+
     //open vcf file
     htsFile *fp  = hts_open(fname,"rb");
     //read header
@@ -179,9 +192,8 @@ void read_vcf(const char *fname)
 
         //sample genotypes
         int t =(fmt->p_len)/2;
-//#pragma omp paralell
-//        {
- //           #pragma omp for
+
+        #pragma omp parallel for
             for (int i = 0; i<t; ++i)
             {
                 //sample name
@@ -197,10 +209,6 @@ void read_vcf(const char *fname)
                 int second_allele_g = bcf_gt_allele(fmt->p[second_allele_p]);
 
                 signed short  charge = 0;
-
-                //cout<< rec->d.allele[0];
-                //cout<< rec->d.allele[3] ;
-
 
 
                 //print genotype
@@ -224,8 +232,6 @@ void read_vcf(const char *fname)
 
             }
 
- //       };
-
     }
 
     bcf_destroy(rec);
@@ -236,6 +242,15 @@ void read_vcf(const char *fname)
 
 int main()
 {
+    auto start = high_resolution_clock::now();
+    auto stop = start;
+    auto duration = stop - stop;
+
+    start = high_resolution_clock::now();
     read_vcf("/home/niktabel/master_projects/DeepAnn/TestData/ALL.chr1.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz");
+    stop = high_resolution_clock::now();
+    duration = duration_cast<microseconds>(stop - start);
+    cout << "Time taken by function: "
+         << duration.count() << " microseconds" << endl;
     return 0;
 };
