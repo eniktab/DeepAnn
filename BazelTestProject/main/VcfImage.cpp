@@ -160,7 +160,7 @@ void write_haplotype (string output_dir, string sample, string chr, unsigned lon
 
 }
 
-void read_vcf(const char *fname)
+void read_vcf(const char *fname, const char *out_put_path)
 {
     const auto processor_count = std::thread::hardware_concurrency();
     if (processor_count > 0)
@@ -223,7 +223,7 @@ void read_vcf(const char *fname)
                     charge = charge/2;
                     if (charge > 0)
                     {
-                        write_haplotype ( "/home/niktabel/master_projects/DeepAnn/TestData/out/",
+                        write_haplotype ( out_put_path,
                                           hdr->samples[i], bcf_hdr_id2name(hdr, rec->rid), (unsigned long)rec->pos, charge);
 
                     }
@@ -240,17 +240,18 @@ void read_vcf(const char *fname)
 }
 
 
-int main()
+int main(int argc, char** argv)
 {
     auto start = high_resolution_clock::now();
     auto stop = start;
     auto duration = stop - stop;
 
     start = high_resolution_clock::now();
-    read_vcf("/home/niktabel/master_projects/DeepAnn/TestData/ALL.chr1.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz");
+    read_vcf(argv[1], argv[2]);
     stop = high_resolution_clock::now();
     duration = duration_cast<microseconds>(stop - start);
     cout << "Time taken by function: "
          << duration.count() << " microseconds" << endl;
     return 0;
 };
+
