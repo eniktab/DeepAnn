@@ -10,7 +10,7 @@ def prepare_io(list_of_files, exe_file, input_path, output_path, job_number):
     job_number = int(job_number) - 1
     input_file = list_files[job_number]
     output_dir = os.path.join(output_path, input_file).replace(".vcf.gz", "/")
-    zip_output_path = os.path.join(output_path, input_file).replace(".vcf.gz", "tar.xz")
+    zip_output_path = os.path.join(output_path, input_file).replace(".vcf.gz", ".tar.xz")
     to_read = os.path.join(input_path, input_file)
 
     if not os.path.isdir(output_dir):
