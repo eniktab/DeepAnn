@@ -36,9 +36,11 @@ def prepare_io(list_of_files, exe_file, input_path, output_path, job_number):
         log_file.write("{} was done in {} hours \n".format(exe_2, elapsed))
 
         # remove residual files
+
         exe_3 = "rm -r {}".format(output_dir)
+        log_file.write("{} started \n".format(exe_3))
         subprocess.run(exe_3, shell=True, stdout=subprocess.PIPE)
-        log_file.write("{} is done \n".format(exe_3))
+        log_file.write("{} was done \n".format(exe_3))
 
 
 def main(argv):
