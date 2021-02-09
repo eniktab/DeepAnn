@@ -160,10 +160,10 @@ void write_haplotype (string output_dir, string sample, string chr, unsigned lon
 
 }
 
-void read_vcf(const char *fname, const char *out_put_path)
+void read_vcf(const char *fname, const char *out_put_path, int processor_count)
 {
-    const auto processor_count = std::thread::hardware_concurrency();
-    cout << processor_count;
+    //const auto processor_count = std::thread::hardware_concurrency();
+    cout << endl << "threads available: " << processor_count << endl ;
     if (processor_count > 0)
     {
         omp_set_num_threads(processor_count - 1);
@@ -246,9 +246,10 @@ int main(int argc, char** argv)
     auto start = high_resolution_clock::now();
     auto stop = start;
     auto duration = stop - stop;
+    int np = omp_get_max_threads() ;
 
     start = high_resolution_clock::now();
-    read_vcf(argv[1], argv[2]);
+    read_vcf(argv[1], argv[2], np);
     stop = high_resolution_clock::now();
     duration = duration_cast<microseconds>(stop - start);
     cout << "Time taken by function: "
