@@ -163,6 +163,7 @@ void write_haplotype (string output_dir, string sample, string chr, unsigned lon
 void read_vcf(const char *fname, const char *out_put_path)
 {
     const auto processor_count = std::thread::hardware_concurrency();
+    cout << processor_count;
     if (processor_count > 0)
     {
         omp_set_num_threads(processor_count - 1);
